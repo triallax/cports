@@ -105,6 +105,7 @@ def check_stage(arch, force=False, remote=False):
         ret = _call_apk("--from", "none", "--repository", str(d), "search")
         # go over each staged package
         for p in ret.stdout.strip().decode().split():
+            print(f"checking {p}")
             # stage providers
             pr = _call_apk(
                 "--from",
