@@ -41,6 +41,12 @@ jobs:
       - name: Checkout
         uses: classabbyamp/treeless-checkout-action@v1
 
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+        with:
+          ## limits ssh access and adds the ssh public keys of the listed GitHub users
+          limit-access-to-users: triallax
+
       - name: Disable apparmor
         run: |
           sudo sysctl kernel.apparmor_restrict_unprivileged_unconfined=0
@@ -73,7 +79,7 @@ jobs:
         run: python3.12 cbuild -W ${{ env.update_check }} -t bulk-pkg 'git:master..+!\[ci skip\]'
 
       - name: Check repository is unstageable
-        run: python3.12 cbuild unstage-check-remote
+        run: python3.12 cbuild -W unstage-check-remote
 
       - name: Save cbuild cache
         uses: actions/cache/save@v4
