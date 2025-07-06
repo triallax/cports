@@ -14,19 +14,23 @@ def check_stage(arch, force=False, remote=False):
     revdeps = {}
 
     def _call_apk(*args):
-        return subprocess.run(
-            [
-                paths.apk(),
-                "--quiet",
-                "--arch",
-                arch,
-                "--allow-untrusted",
-                "--root",
-                paths.bldroot(),
-                *args,
-            ],
+        a = [
+            paths.apk(),
+            "--quiet",
+            "--arch",
+            arch,
+            "--allow-untrusted",
+            "--root",
+            paths.bldroot(),
+            *args,
+        ]
+        print(f"running apk {a}")
+        s = subprocess.run(
+            a,
             capture_output=True,
         )
+        print(f"output: {s.stdout.decode()}")
+        return s
 
     # full repo list for revdep search
     rlist = []
@@ -87,8 +91,10 @@ def check_stage(arch, force=False, remote=False):
     rr.sort()
 
     for r in rs:
+        print(f"stage repo {r}")
         rlist += ["--repository", str(r)]
     for r in rr:
+        print(f"regular repo {r}")
         rlist += ["--repository", str(r)]
 
     # not needed for local repos (basically a noop for those) but
@@ -105,7 +111,6 @@ def check_stage(arch, force=False, remote=False):
         ret = _call_apk("--from", "none", "--repository", str(d), "search")
         # go over each staged package
         for p in ret.stdout.strip().decode().split():
-            print(f"checking {p}")
             # stage providers
             pr = _call_apk(
                 "--from",
@@ -286,7 +291,7 @@ def check_stage(arch, force=False, remote=False):
                 del checkdeps[d]
                 break
 
-    # we can safely unstage as there is ntohing left
+    # we can safely unstage as there is nothing left
     if len(checkdeps) == 0:
         return rs
 
