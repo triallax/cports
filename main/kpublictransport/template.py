@@ -1,5 +1,5 @@
 pkgname = "kpublictransport"
-pkgver = "25.04.3"
+pkgver = "25.08.0"
 pkgrel = 0
 build_style = "cmake"
 hostmakedepends = [
@@ -11,6 +11,7 @@ hostmakedepends = [
 ]
 makedepends = [
     "ki18n-devel",
+    "kirigami-addons-devel",
     "networkmanager-qt-devel",
     "protobuf-devel",
     "qt6-qtdeclarative-devel",
@@ -22,7 +23,7 @@ url = "https://api.kde.org/kdepim/kpublictransport/html"
 source = (
     f"$(KDE_SITE)/release-service/{pkgver}/src/kpublictransport-{pkgver}.tar.xz"
 )
-sha256 = "637bac5ff238b92d31c4a677e92a7319981611795756348552f00dd528425e5e"
+sha256 = "fd0190081f4be172711ec1e0e5702805bcf9c00c73a08a42ba3790167cabab0a"
 
 
 @subpackage("kpublictransport-devel")
